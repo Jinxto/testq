@@ -15,7 +15,6 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import jdk.internal.org.jline.utils.Status;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -135,21 +134,23 @@ public class bot extends ListenerAdapter {
 				           }
 				        
 				           if(discordId==null) {
+				        	   System.out.println("new user");
 				        	   HttpResponse<JsonNode> response4 = Unirest.post("https://a201bc7a9475d96ffe85d436af7fc56e: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@mamak-proxies.myshopify.com/admin/api/2021-04/orders/"+userid+"/close.json")
 				    				   .header("Content-Type", "application/json")
 				    				   .asJson();
 				    		   if(response4.getStatus()==200) {
+				    			   System.out.println("creating user");
 				    			   String saltStr = salt.toString();
 						           String username = "10248_"+id;
 					        	   Unirest.setTimeouts(0, 0);
 						           HttpResponse<JsonNode> response3 = Unirest.post("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users")
-						             .header("X-Access-Token", "Bearer API-ACCESS-TOKEN")
-						             .header("Content-Type", "application/json")
-							          .body("{\n    \"username\": \""+username+"\",\n    \"password\": \""+saltStr+"\",\n    \"traffic\": "+wifi3+"\n}")
-						             .asJson();
-						           JSONObject ovke = response3.getBody().getObject();
-						           String oke = ovke.get("id").toString();
-						           System.out.println("{\n    \"username\": \""+username+"\",\n    \"password\": \""+saltStr+"\",\n    \"traffic\": "+wifi3+"\n}");
+						    			   .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
+						    			   .header("Content-Type", "application/json")
+						    			      .body("{\n    \"username\": \""+username+"\",\n    \"password\": \""+saltStr+"\",\n    \"traffic\": "+wifi3+"\n}")
+						    			   .asJson();
+						    			  JSONObject ovke = (JSONObject) response3.getBody().getObject();
+						    		      String oke = ovke.get("id").toString();
+						    		      System.out.println("success");
 						           if(response3.getStatus()==200) {
 						        	   csv casio = new csv();
 						        	   casio.writeSpecific2(id+","+oke, "test.txt");
@@ -274,6 +275,30 @@ public class bot extends ListenerAdapter {
         	 }
          }
     	 
+     }if(messa.contains("test")) {
+    	 MessageChannel channel = event.getChannel();
+    	 String temp = messa.replace("test ", "");
+    	 String password = "12da35jsa";
+    	 String quota = "0";
+    	 Unirest.setTimeouts(0, 0);
+         HttpResponse<JsonNode> response3;
+		try {
+			response3 = Unirest.post("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users")
+			   .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
+			   .header("Content-Type", "application/json")
+			      .body("{\n    \"username\": \""+temp+"\",\n    \"password\": \""+password+"\",\n    \"traffic\": "+quota+"\n}")
+			   .asJson();
+			  JSONObject ovke = (JSONObject) response3.getBody().getObject();
+		         String oke = ovke.get("id").toString();
+		         System.out.println("{\n    \"username\": \""+temp+"\",\n    \"password\": \""+password+"\",\n    \"traffic\": "+quota+"\n}");
+               csv cos = new csv();
+               cos.writeSpecific2(temp+","+oke, "test.txt");
+               channel.sendMessage("{\n    \"username\": \""+temp+"\",\n    \"password\": \""+password+"\",\n    \"traffic\": "+quota+"\n}"+ oke).queue();
+		} catch (UnirestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      
      }
      
  }
