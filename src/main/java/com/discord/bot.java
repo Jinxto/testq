@@ -42,7 +42,7 @@ public class bot extends ListenerAdapter {
      		+ "View how much data you currently have.", true);
      eb.addField("Claim your data","`$claim <order_number> <email>\n`"
      		+ "After paying on our store, you can then claim your data by invoking this command using the order number of the paid order.",true);
-	   eb.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+	 eb.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 
 	 channel.sendMessage(eb.build()).queue();
      }
@@ -61,7 +61,7 @@ public class bot extends ListenerAdapter {
 				if(response.getStatus()==200) {
 					EmbedBuilder eb1 = new EmbedBuilder();
 					   eb1.setTitle("Data: "+pl);
-					   eb1.setDescription("You can top up your data at `$claim`");
+					   eb1.setDescription("<@"+id+"> You can top up your data at `$claim`");
 					   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 			    	   channel.sendMessage(eb1.build()).queue();
 				
@@ -130,7 +130,7 @@ public class bot extends ListenerAdapter {
                             		 System.out.println("existing user");
                             		  EmbedBuilder eb1 = new EmbedBuilder();
 									   eb1.setTitle("Data deposited!");
-									   eb1.setDescription("Data is deposited! Thanks for using us!");
+									   eb1.setDescription("Data is deposited! Thanks for using us <@"+id+">! ");
 									   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 							    	   channel.sendMessage(eb1.build()).queue();
 						        	   return;
@@ -174,7 +174,7 @@ public class bot extends ListenerAdapter {
 						        	   casio.writeSpecific2(id+","+bot, "test.txt");
 						        	   EmbedBuilder eb1 = new EmbedBuilder();
 									   eb1.setTitle("Welcome");
-									   eb1.setDescription("Data is deposited! Welcome new user! `$help` for more commands!");
+									   eb1.setDescription("Data is deposited! Welcome <@"+id+"> ! `$help` for more commands!");
 									   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 							    	   channel.sendMessage(eb1.build()).queue();
 						        	   return;
