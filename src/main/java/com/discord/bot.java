@@ -42,14 +42,15 @@ public class bot extends ListenerAdapter {
      		+ "View how much data you currently have.", true);
      eb.addField("Claim your data","`$claim <order_number> <email>\n`"
      		+ "After paying on our store, you can then claim your data by invoking this command using the order number of the paid order.",true);
-     //eb.setfooter(Stringtext, string icon url);
+	   eb.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+
 	 channel.sendMessage(eb.build()).queue();
      }
      if(messa.equals("$data")) {
     	 MessageChannel channel = event.getChannel();
     	 csv cas = new csv();
     	 String yes = cas.getId(id);
-    	 if(!yes.isEmpty()) {
+    	 if(yes!=null) {
     		 Unirest.setTimeouts(0, 0);
     		 try {
 				HttpResponse<JsonNode> response = Unirest.get("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users/"+yes)
@@ -58,17 +59,29 @@ public class bot extends ListenerAdapter {
 				JSONObject json = (JSONObject) response.getBody().getObject();
 				String pl = json.get("availableTraffic").toString(); //changeto availableTraffic on v2
 				if(response.getStatus()==200) {
+					EmbedBuilder eb1 = new EmbedBuilder();
+					   eb1.setTitle("Data: "+pl);
+					   eb1.setDescription("You can top up your data at `$claim`");
+					   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+			    	   channel.sendMessage(eb1.build()).queue();
 				
-				channel.sendMessage(pl).queue();
 				return;
 				}
 			} catch (UnirestException e) {
 				// TODO Auto-generated catch block
-				channel.sendMessage("Data Not Found!");
+				EmbedBuilder eb1 = new EmbedBuilder();
+				   eb1.setTitle("User not found");
+				   eb1.setDescription("Are you new? Go ahead and purchase our subscription and claim it at `$claim`!");
+				   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+		    	  channel.sendMessage(eb1.build()).queue();
 			}
     		
     	 }
-    	 channel.sendMessage("Data Not Found!");
+    	 EmbedBuilder eb1 = new EmbedBuilder();
+		   eb1.setTitle("User not found");
+		   eb1.setDescription("Are you new? Go ahead and purchase our subscription and claim it at `$claim`!");
+		   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+  	       channel.sendMessage(eb1.build()).queue();
     		
     		
     			
@@ -115,25 +128,37 @@ public class bot extends ListenerAdapter {
                             	 
                             	 if(response2.getStatus()==200) {
                             		 System.out.println("existing user");
-                      				channel.sendMessage("Data claimed for existing user!").queue();
-                                    return;
+                            		  EmbedBuilder eb1 = new EmbedBuilder();
+									   eb1.setTitle("Data deposited!");
+									   eb1.setDescription("Data is deposited! Thanks for using us!");
+									   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+							    	   channel.sendMessage(eb1.build()).queue();
+						        	   return;
                             	 }
-                            	 channel.sendMessage("Error occured try again!").queue();
-                 				return;
+                            	  EmbedBuilder eb1 = new EmbedBuilder();
+								   eb1.setTitle("An error occured!");
+								   eb1.setDescription("Please try again!");
+								   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+						    	   channel.sendMessage(eb1.build()).queue();
+					        	   return;
                              }
-                             channel.sendMessage("Data already claimed!").queue();
-                             return;
+                       	       EmbedBuilder eb1 = new EmbedBuilder();
+							   eb1.setTitle("An error occured!");
+							   eb1.setDescription("Data already been claimed or wrong details inputted!");
+							   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+					    	   channel.sendMessage(eb1.build()).queue();
+				        	   return;
 				    	   }
 				    	   System.out.println("here");
 				    	   String SALTCHARS = "abcdefghijklmnopqrstuvwxyz1234567890";
 				           StringBuilder salt = new StringBuilder();
 				           Random rnd = new Random();
-				           while (salt.length() < 8) { // length of the random string.
+				           while (salt.length() < 10) { // length of the random string.
 				               int index = (int) (rnd.nextFloat() * SALTCHARS.length());
 				               salt.append(SALTCHARS.charAt(index));
 				           }
 				        
-				           if(discordId==null) {
+				           
 				        	   System.out.println("new user");
 				        	   HttpResponse<JsonNode> response4 = Unirest.post("https://a201bc7a9475d96ffe85d436af7fc56e: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@mamak-proxies.myshopify.com/admin/api/2021-04/orders/"+userid+"/close.json")
 				    				   .header("Content-Type", "application/json")
@@ -141,48 +166,49 @@ public class bot extends ListenerAdapter {
 				    		   if(response4.getStatus()==200) {
 				    			   System.out.println("creating user");
 				    			   String saltStr = salt.toString();
-						           String username = "10248_"+id;
-					        	   Unirest.setTimeouts(0, 0);
-						           HttpResponse<JsonNode> response3 = Unirest.post("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users")
-						    			   .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
-						    			   .header("Content-Type", "application/json")
-						    			      .body("{\n    \"username\": \""+username+"\",\n    \"password\": \""+saltStr+"\",\n    \"traffic\": "+wifi3+"\n}")
-						    			   .asJson();
-						    			  JSONObject ovke = (JSONObject) response3.getBody().getObject();
-						    		      String oke = ovke.get("id").toString();
-						    		      System.out.println("success");
-						           if(response3.getStatus()==200) {
+						           String username = id;
+						    	   api ae = new api();
+						    	   String bot = ae.apid(username, saltStr, wifi3);
+						           if(bot!=null) {
 						        	   csv casio = new csv();
-						        	   casio.writeSpecific2(id+","+oke, "test.txt");
-						        	   channel.sendMessage("congratz new user").queue();
+						        	   casio.writeSpecific2(id+","+bot, "test.txt");
+						        	   EmbedBuilder eb1 = new EmbedBuilder();
+									   eb1.setTitle("Welcome");
+									   eb1.setDescription("Data is deposited! Welcome new user! `$help` for more commands!");
+									   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+							    	   channel.sendMessage(eb1.build()).queue();
 						        	   return;
 				    		   }
 				        	  
-					        	   channel.sendMessage("cant create account").queue();
-                                   return;
+						           EmbedBuilder eb1 = new EmbedBuilder();
+								   eb1.setTitle("An error occured");
+								   eb1.setDescription("Account creation failed");
+								   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+						    	   channel.sendMessage(eb1.build()).queue();
+						    	   return;
 				    	   }
-							   EmbedBuilder eb = new EmbedBuilder();
-							   eb.setTitle("An error occured");
-							   eb.setDescription("Something happend, please try again!");
-					    	   channel.sendMessage(eb.build()).queue();
-					    	   return;
-						   }
+							 
+						   
 				           
-						   EmbedBuilder eb = new EmbedBuilder();
-						   eb.setTitle("An error occured");
-						   eb.setDescription("Data has already been claimed or incorrect information entered!");
-				    	   channel.sendMessage(eb.build()).queue();
+						   EmbedBuilder eb1 = new EmbedBuilder();
+						   eb1.setTitle("An error occured");
+						   eb1.setDescription("Data has already been claimed or incorrect information entered!");
+						   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+				    	   channel.sendMessage(eb1.build()).queue();
 				    	   return;
 				       }
 				       EmbedBuilder eb = new EmbedBuilder();
 					   eb.setTitle("Data not found!");
 					   eb.setDescription("Either your id is claimed or you input the wrong details!");
+					   eb.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 			    	   channel.sendMessage(eb.build()).queue();
 			    	   return;
 			} catch (UnirestException e) {
-				e.printStackTrace();
-				// TODO Auto-generated catch block
-				channel.sendMessage("Error occured try again!").queue();
+				EmbedBuilder eb1 = new EmbedBuilder();
+				   eb1.setTitle("An error occured!");
+				   eb1.setDescription("Error occured please try again!");
+				   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+		    	   channel.sendMessage(eb1.build()).queue();
 			}
     	 }
     	
@@ -193,6 +219,7 @@ public class bot extends ListenerAdapter {
     	  EmbedBuilder eb = new EmbedBuilder();
     	  eb.setTitle("Available regions");
           eb.setDescription("`Albania` `Algeria` `Andorra` `Angola Antigua and Barbuda` `Argentina` `Armenia` `Australia` `Austria` `Azerbaijan` `Bahrain` `Bangladesh` `Barbados` `Belarus` `Belgium` `Bolivia Bosnia and Herzegovina` `Botswana` `Brazil` `Bulgaria` `Burkina Faso` `Cambodia` `Cameroon` `Canada` `Cape Verde` `Chile` `China` `Colombia` `Congo` `Costa Rica` `Cote D'Ivoire` `Croatia` `Cuba` `Cyprus` `Czech Republic` `Denmark` `Dominican Republic` `Ecuador` `Egypt` `El Salvador` `Equatorial` `Guinea` `Estonia` `Ethiopia` `Finland` `France` `French` `Guiana` `Gabon` `Georgia` `Germany` `Ghana` `Greece` `Grenada` `Guatemala` `Haiti` `Honduras` `Hong Kong` `Hungary` `India` `Indonesia` `Iran`, `Islamic Republic of Iraq` `Ireland` `Israel` `Italy` `Jamaica` `Japan` `Jordan` `Kazakhstan` `Kenya` `Korea`, `Republic of Kuwait Kyrgyzstan Lao` `People's Democratic Republic Latvia Lebanon Libyan Arab` `Jamahiriya` `Lithuania` `Luxembourg` `Macao` `Macedonia`, `the Former Yugoslav` `Republic of Madagascar` `Malaysia` `Malta` `Mauritius` `Mexico` `Moldova`, `Republic of Mongolia` `Montenegro` `Morocco` `Mozambique` `Myanmar` `Namibia` `Nepal` `Netherlands` `New Caledonia` `New Zealand` `Nicaragua` `Nigeria` `Norway` `Oman` `Pakistan` `Palestine`, `State of Panama` `Paraguay` `Peru` `Philippines` `Poland` `Portugal` `Qatar` `Romania` `Russian Federation` `Saint Kitts and Nevis` `Saint Vincent and the Grenadines` `Saudi Arabia` `Senegal` `Serbia` `Singapore` `Slovakia` `Slovenia` `South Africa` `Spain` `Sri Lanka` `Sudan` `Suriname` `Sweden` `Switzerland` `Taiwan`,`China` `Tanzania`,`Thailand` `Togo` `Trinidad and Tobago` `Tunisia` `Turkey` `Ukraine` `United Arab Emirates` `United Kingdom` `United States` `Uruguay` `Uzbekistan` `Venezuela` `Viet Nam` `Yemen` `Zambia` `Zimbabwe`");
+		  eb.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
           channel.sendMessage(eb.build()).queue();
      }
      if(messa.contains("$gen")) {
@@ -220,7 +247,6 @@ public class bot extends ListenerAdapter {
 	        		String kataLaluan = json.get("password").toString();
 	        		System.out.println(nama+" "+kataLaluan);
 	        		if(response.getStatus()==200) {
-	        			channel.sendMessage(nama+" "+kataLaluan+" "+generator+" "+tempeor).queue();
 	        			utilities util = new utilities();
 	        			String attachment = "";
 	        			Unirest.setTimeouts(0, 0);
@@ -240,7 +266,7 @@ public class bot extends ListenerAdapter {
 	        			        		 cos.writeSpecific2(attachment, "temp.txt");
 	        			    
 	        			        	    }
-	        			        		  channel.sendFile(new File("temp.txt"),"Proxies generated").queue();
+	        			        		  channel.sendFile(new File("temp.txt"),"`Proxies generated`").queue();
 	        			        		  cos.deleteFile("temp.txt");
 	        			        		   return;
 	        		        			}
@@ -265,7 +291,11 @@ public class bot extends ListenerAdapter {
 	        			//while loop send Message message = new MessageBuilder().append("My message").build();
 	        			//textChannel.sendFile(new File("my-file.txt"), message).queue();
 	        		}
-	        		channel.sendMessage("Error Occured");
+	        		EmbedBuilder eb1 = new EmbedBuilder();
+					   eb1.setTitle("An error occured!");
+					   eb1.setDescription("Please specify the correct country name including uppercase letter and spaces");
+					   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+					   channel.sendMessage(eb1.build()).queue();
 				} catch (UnirestException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -275,30 +305,6 @@ public class bot extends ListenerAdapter {
         	 }
          }
     	 
-     }if(messa.contains("test")) {
-    	 MessageChannel channel = event.getChannel();
-    	 String temp = messa.replace("test ", "");
-    	 String password = "12da35jsa";
-    	 String quota = "0";
-    	 Unirest.setTimeouts(0, 0);
-         HttpResponse<JsonNode> response3;
-		try {
-			response3 = Unirest.post("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users")
-			   .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
-			   .header("Content-Type", "application/json")
-			      .body("{\n    \"username\": \""+temp+"\",\n    \"password\": \""+password+"\",\n    \"traffic\": "+quota+"\n}")
-			   .asJson();
-			  JSONObject ovke = (JSONObject) response3.getBody().getObject();
-		         String oke = ovke.get("id").toString();
-		         System.out.println("{\n    \"username\": \""+temp+"\",\n    \"password\": \""+password+"\",\n    \"traffic\": "+quota+"\n}");
-               csv cos = new csv();
-               cos.writeSpecific2(temp+","+oke, "test.txt");
-               channel.sendMessage("{\n    \"username\": \""+temp+"\",\n    \"password\": \""+password+"\",\n    \"traffic\": "+quota+"\n}"+ oke).queue();
-		} catch (UnirestException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-      
      }
      
  }
