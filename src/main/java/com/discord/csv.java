@@ -108,15 +108,17 @@ public class csv {
 		}
 	
   }
-  public void writeSpecific2(String text, String Filename, int index) {
+  public void writeSpecific2(String text, String Filename, int index, String countrycode) {
 		FileWriter fw;
+		
 		try {
+			utilities util = new utilities();
 			fw = new FileWriter(Filename,true);
 			BufferedWriter bw = new BufferedWriter(fw); // extension of filewriter make sure words are efficient written on the file
 			PrintWriter pw = new PrintWriter(bw);
+			System.out.println("generating data");
 			for(int i = 0; i<index; i++) {
-		   System.out.println(i);
-			pw.println(text);
+			pw.println(text+util.generateRandomString(8)+"_country-"+countrycode);
 			}
 			pw.flush();
 			pw.close();

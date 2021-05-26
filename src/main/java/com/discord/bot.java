@@ -275,8 +275,8 @@ public class bot extends ListenerAdapter {
 	        				   if(response3.getStatus()==200) {
 	        					  if(numbers>=22) {
 	        		        	     
-	        			        		 attachment="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-"+util.generateRandomString(8)+"_country-"+countrycode;
-	        			        		 cos.writeSpecific2(attachment, "temp.txt", numbers);
+	        			        		 attachment="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-";
+	        			        		 cos.writeSpecific2(attachment, "temp.txt", numbers,countrycode);
 	        			        		  channel.sendFile(new File("temp.txt"),"`Proxies generated`").queue();
 	        			        		  cos.deleteFile("temp.txt");
 	        			        		   return;
