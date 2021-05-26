@@ -173,7 +173,7 @@ public class bot extends ListenerAdapter {
 						    	   String bot = ae.apid(username, saltStr, wifi3);
 						           if(bot!=null) {
 						        	   csv casio = new csv();
-						        	   casio.writeSpecific2(id+","+bot, "test.txt");
+						        	   casio.writeSpecific(id, bot);
 						        	   EmbedBuilder eb1 = new EmbedBuilder();
 									   eb1.setTitle("Welcome");
 									   eb1.setDescription("Data is deposited! Welcome <@"+id+"> ! `$help` for more commands!");
@@ -234,6 +234,7 @@ public class bot extends ListenerAdapter {
              generator = m.group();
          }
          int numbers = Integer.parseInt(generator);
+         System.out.println(numbers);
          tempeor = tempeor.replace(generator+" ", "");
          if(numbers<10000) {
         	 csv cos = new csv();
@@ -249,10 +250,16 @@ public class bot extends ListenerAdapter {
 	        		String kataLaluan = json.get("password").toString();
 	        		String pl = json.get("availableTraffic").toString(); 
 	        		System.out.println(nama+" "+kataLaluan);
-	        		float temp = Float.valueOf(pl).floatValue();
-	        		
+	        		System.out.println(pl);
 	        		if(response.getStatus()==200) {
-	        			if(temp>0) {
+	        			if(pl.contains("-")) {
+	        				EmbedBuilder eb1 = new EmbedBuilder();
+							   eb1.setTitle("Data quota exceeded!");
+							   eb1.setDescription(" <@"+id+">, you have currently "+pl+" please $claim!");
+							   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+							   channel.sendMessage(eb1.build()).queue();
+							   return;
+	        			}
 	        			utilities util = new utilities();
 	        			String attachment = "";
 	        			Unirest.setTimeouts(0, 0);
@@ -267,11 +274,9 @@ public class bot extends ListenerAdapter {
 	        				   String countrycode = jeck.get("code").toString();
 	        				   if(response3.getStatus()==200) {
 	        					  if(numbers>=22) {
-	        		        	     for(int i = 0; i<numbers; i++) {
+	        		        	     
 	        			        		 attachment="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-"+util.generateRandomString(8)+"_country-"+countrycode;
-	        			        		 cos.writeSpecific2(attachment, "temp.txt");
-	        			    
-	        			        	    }
+	        			        		 cos.writeSpecific2(attachment, "temp.txt", numbers);
 	        			        		  channel.sendFile(new File("temp.txt"),"`Proxies generated`").queue();
 	        			        		  cos.deleteFile("temp.txt");
 	        			        		   return;
@@ -294,13 +299,8 @@ public class bot extends ListenerAdapter {
 	        			
 	        			//connect api
 	        			//if api ==200
-	        			}	
-	        			EmbedBuilder eb1 = new EmbedBuilder();
-						   eb1.setTitle("Data quota exceeded!");
-						   eb1.setDescription(" <@"+id+">, you have currently "+pl+" please $claim!");
-						   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
-						   channel.sendMessage(eb1.build()).queue();
-						   return;
+	        			
+	        			
 	        		}
 	        		EmbedBuilder eb1 = new EmbedBuilder();
 					   eb1.setTitle("An error occured!");
@@ -319,47 +319,7 @@ public class bot extends ListenerAdapter {
      }
      
  }
-	if(event.getGuild().getTextChannelById("846927604731609098")!=null){
-		String msg = event.getMessage().toString();
-		String id = Long.toString(event.getAuthor().getIdLong());
-		User user = event.getJDA().getUserById(id);
-		TextChannel textChannel = event.getGuild().getTextChannelsByName("mamak-admin",true).get(0);
-		System.out.println("true");
-		if(msg.contains("$viewuser")) {
-			String tempor = msg.replace("$viewuser ", "");
-			 csv cas = new csv();
-	    	 String yes = cas.getId(tempor);
-	    	 if(yes!=null) {
-	    		 Unirest.setTimeouts(0, 0);
-	    		 try {
-					HttpResponse<JsonNode> response = Unirest.get("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users/"+yes)
-					   .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
-					   .asJson();
-					JSONObject json = (JSONObject) response.getBody().getObject();
-					String pl = json.get("availableTraffic").toString(); //changeto availableTraffic on v2
-					if(response.getStatus()==200) {
-				        EmbedBuilder eb1 = new EmbedBuilder();
-						   eb1.setTitle("Data: "+pl);
-						   eb1.setDescription(user.getName());
-						   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
-				    	   textChannel.sendMessage(eb1.build()).queue();
-				   		System.out.println("yes");
-
-					return;
-					}
-				} catch (UnirestException e) {
-					// TODO Auto-generated catch block
-					EmbedBuilder eb1 = new EmbedBuilder();
-					   eb1.setTitle("User not found");
-					   eb1.setDescription("No data found!");
-					   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
-			    	  textChannel.sendMessage(eb1.build()).queue();
-				}
-	    		
-	    	 }
-		}
 	
-	}
 	}
 }
 
