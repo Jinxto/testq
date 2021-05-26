@@ -252,7 +252,7 @@ public class bot extends ListenerAdapter {
 	        		System.out.println(nama+" "+kataLaluan);
 	        		System.out.println(pl);
 	        		if(response.getStatus()==200) {
-	        			if(pl.contains("-")) {
+	        			if(pl.contains("-") || pl.equals("0")) {
 	        				EmbedBuilder eb1 = new EmbedBuilder();
 							   eb1.setTitle("Data quota exceeded!");
 							   eb1.setDescription(" <@"+id+">, you have currently "+pl+" please $claim!");
@@ -283,7 +283,7 @@ public class bot extends ListenerAdapter {
 	        		        			}
 	        		        			if(numbers<22) {
 	        		        			for(int i = 0; i<numbers; i++) {
-	        		        				attachment+="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-"+util.generateRandomString(8)+"_country-my\n";
+	        		        				attachment+="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-"+util.generateRandomString(8)+"_country-"+countrycode+"\n";
 	        		    
 	        		        			}
 	        		        			attachment = "```"+attachment+"```";
