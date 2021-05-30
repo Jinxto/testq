@@ -1,7 +1,6 @@
 package com.discord;
 
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 import javax.security.auth.login.LoginException;
 
@@ -22,7 +21,7 @@ public class App
     	start.csvdataInitialize();
        JDA jda = JDABuilder.createDefault("NjM1Mzc2MzIyOTAxOTY2ODQ4.XawKUA.9pe8OM9ORjMujM3dKqdPmL2I8kc").build();
        jda.addEventListener(new bot());
-       jda.getPresence().setActivity(Activity.listening("$help in DMs"));
+       jda.getPresence().setActivity(Activity.listening("$help in DMs	"));
 
     }
 }

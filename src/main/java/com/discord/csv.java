@@ -91,6 +91,7 @@ public class csv {
   }
   public void deleteFile(String filename) {
 	  File file = new File(filename);
+	  file.setWritable(true);
 	  file.delete();
   }
   public void writeSpecific(String discordId, String apiId) {
@@ -120,8 +121,13 @@ public class csv {
 			for(int i = 0; i<index; i++) {
 			pw.println(text+util.generateRandomString(8)+"_country-"+countrycode);
 			}
+		
 			pw.flush();
 			pw.close();
+			fw.flush();
+			fw.close();
+			bw.flush();
+			bw.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

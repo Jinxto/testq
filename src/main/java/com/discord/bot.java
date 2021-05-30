@@ -3,6 +3,7 @@ package com.discord;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +20,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -135,7 +135,13 @@ public class bot extends ListenerAdapter {
 									   eb1.setDescription("Data is deposited! Thanks for using us <@"+id+">! ");
 									   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 							    	   channel.sendMessage(eb1.build()).queue();
-						        	   return;
+							    	   EmbedBuilder eb2 = new EmbedBuilder();
+									   eb2.setTitle("Data deposited!");
+									   eb2.setDescription("<@"+id+">  has claimed "+wifi3+" using"+ contact_email);
+									   eb2.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+									   TextChannel textChannel = event.getGuild().getTextChannelById("826263743159074866");
+									   textChannel.sendMessage(eb2.build()).queue();
+									   return;
                             	 }
                             	  EmbedBuilder eb1 = new EmbedBuilder();
 								   eb1.setTitle("An error occured!");
@@ -179,6 +185,12 @@ public class bot extends ListenerAdapter {
 									   eb1.setDescription("Data is deposited! Welcome <@"+id+"> ! `$help` for more commands!");
 									   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 							    	   channel.sendMessage(eb1.build()).queue();
+							    	   EmbedBuilder eb2 = new EmbedBuilder();
+									   eb2.setTitle("New user!");
+									   eb2.setDescription("<@"+id+"> new user has claimed "+wifi3+" using"+ contact_email);
+									   eb2.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+									   TextChannel textChannel = event.getGuild().getTextChannelById("826263743159074866");
+									   textChannel.sendMessage(eb2.build()).queue();
 						        	   return;
 				    		   }
 				        	  
@@ -274,11 +286,12 @@ public class bot extends ListenerAdapter {
 	        				   String countrycode = jeck.get("code").toString();
 	        				   if(response3.getStatus()==200) {
 	        					  if(numbers>=22) {
-	        		        	     
+	        						  cos.deleteFile("temp.txt");
 	        			        		 attachment="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-";
 	        			        		 cos.writeSpecific2(attachment, "temp.txt", numbers,countrycode);
 	        			        		  channel.sendFile(new File("temp.txt"),"`Proxies generated`").queue();
 	        			        		  cos.deleteFile("temp.txt");
+	        			        		 
 	        			        		   return;
 	        		        			}
 	        		        			if(numbers<22) {
@@ -319,6 +332,133 @@ public class bot extends ListenerAdapter {
      }
      
  }
+	if(!event.getAuthor().equals(event.getJDA().getSelfUser()) && event.getChannel().getId().equals("826126426809172008")){
+		String msg = event.getMessage().getContentRaw();
+		MessageChannel mes = event.getChannel();
+		if(msg.equals("$balance")) {
+			System.out.println("true");
+			try {
+				HttpResponse<JsonNode> response = Unirest.get("https://dashboard.iproyal.com/api/residential/royal/reseller/my-info")
+				  .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
+				  .asJson();
+				JSONObject jsong = response.getBody().getObject();
+				String data = jsong.get("availableTraffic").toString();
+				System.out.println(data);
+				mes.sendMessage(data).queue();
+				return;
+			} catch (UnirestException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(msg.contains("$viewuser")) {
+			String temp = msg.replace("$viewuser ", "");
+			HttpResponse<JsonNode> response;
+			try {
+				 csv cas = new csv();
+		    	 String yes = cas.getId(temp);
+				response = Unirest.get("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users/"+yes)
+						   .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
+						   .asJson();
+				JSONObject json = (JSONObject) response.getBody().getObject();
+				String pl = json.get("availableTraffic").toString(); //changeto availableTraffic on v2
+				if(response.getStatus()==200) {
+					EmbedBuilder eb1 = new EmbedBuilder();
+					   eb1.setTitle("Data: "+pl);
+					   eb1.setDescription("<@"+temp+"> has "+pl+"GB");
+					   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+			    	   mes.sendMessage(eb1.build()).queue();
+				
+				return;
+				}
+			} catch (UnirestException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+					
+			
+		}
+		if(msg.contains("$add")) {
+			String temp = msg.replace("$add ", "");
+			String wifi3 =  temp.substring(0, temp.length()-18).replace(" ", "");
+			String discordata = temp.replace(wifi3+" ","");
+			   csv cas = new csv();
+	    	   String discordId = cas.getId(discordata);
+	    	   if(discordId!=null) {
+	    		   System.out.println("admin add");
+                   Unirest.setTimeouts(0, 0);
+		    		   HttpResponse<String> response2;
+					try {
+						response2 = Unirest.post("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users/"+discordId+"/give-traffic")
+								   .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
+								   .header("Content-Type", "application/json")
+								   .body("{\n    \"amount\": "+wifi3+"\n}")
+								   .asString();
+						  System.out.println(response2.getStatus());
+		                	 if(response2.getStatus()==200) {
+		                		  System.out.println("custom data added");
+		                		  EmbedBuilder eb1 = new EmbedBuilder();
+								   eb1.setTitle("Data deposited!");
+								   eb1.setDescription("Data is deposited for user <@"+discordata+">! ");
+								   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+						    	   mes.sendMessage(eb1.build()).queue();
+					        	   return;
+		                	 }
+		                	  EmbedBuilder eb1 = new EmbedBuilder();
+							   eb1.setTitle("An error occured!");
+							   eb1.setDescription("Please try again!");
+							   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+					    	   mes.sendMessage(eb1.build()).queue();
+				        	   return;
+					} catch (UnirestException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    	
+	    	   }
+			
+		}
+		if(msg.contains("$remove")) {
+			String temp = msg.replace("$remove ", "");
+			String wifi3 =  temp.substring(0, temp.length()-18).replace(" ", "");
+			String discordata = temp.replace(wifi3+" ","");
+			   csv cas = new csv();
+	    	   String discordId = cas.getId(discordata);
+	    	   if(discordId!=null) {
+	    		   System.out.println("admin add");
+                   Unirest.setTimeouts(0, 0);
+		    		   HttpResponse<String> response2;
+					try {
+						response2 = Unirest.post("https://dashboard.iproyal.com/api/residential/royal/reseller/sub-users/"+discordId+"/take-traffic")
+								   .header("X-Access-Token", "Bearer F0D4SA5SmEKh4Q7eLxP2OoZ00JX6S1Oc4A3HayZzsSDeU72wDKlqCppmxIT2")
+								   .header("Content-Type", "application/json")
+								   .body("{\n    \"amount\": "+wifi3+"\n}")
+								   .asString();
+						  System.out.println(response2.getStatus());
+		                	 if(response2.getStatus()==200) {
+		                		  System.out.println("custom data taken");
+		                		  EmbedBuilder eb1 = new EmbedBuilder();
+								   eb1.setTitle("Data removed!");
+								   eb1.setDescription("Data is removed for user <@"+discordata+">! ");
+								   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+						    	   mes.sendMessage(eb1.build()).queue();
+					        	   return;
+		                	 }
+		                	  EmbedBuilder eb1 = new EmbedBuilder();
+							   eb1.setTitle("An error occured!");
+							   eb1.setDescription("Please try again!");
+							   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+					    	   mes.sendMessage(eb1.build()).queue();
+				        	   return;
+					} catch (UnirestException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    	
+	    	   }
+		}
+		
+	}
 	
 	}
 }
