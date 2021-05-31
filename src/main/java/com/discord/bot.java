@@ -131,16 +131,17 @@ public class bot extends ListenerAdapter {
                             	 if(response2.getStatus()==200) {
                             		 System.out.println("existing user");
                             		  EmbedBuilder eb1 = new EmbedBuilder();
+                            		  MessageChannel channel2 = event.getJDA().getTextChannelById("826263743159074866");
+									   EmbedBuilder eb2 = new EmbedBuilder();
+									   eb2.setTitle("Data deposited!");
+									   eb2.setDescription("<@"+id+">  has claimed "+wifi3+"GB using "+ contact_email);
+									   eb2.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 									   eb1.setTitle("Data deposited!");
 									   eb1.setDescription("Data is deposited! Thanks for using us <@"+id+">! ");
 									   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
-							    	   channel.sendMessage(eb1.build()).queue();
-							    	   EmbedBuilder eb2 = new EmbedBuilder();
-									   eb2.setTitle("Data deposited!");
-									   eb2.setDescription("<@"+id+">  has claimed "+wifi3+" using"+ contact_email);
-									   eb2.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
-									   TextChannel textChannel = event.getGuild().getTextChannelById("826263743159074866");
-									   textChannel.sendMessage(eb2.build()).queue();
+									   channel2.sendMessage(eb2.build()).queue();
+									   channel.sendMessage(eb1.build()).queue();
+							    	  
 									   return;
                             	 }
                             	  EmbedBuilder eb1 = new EmbedBuilder();
@@ -178,19 +179,20 @@ public class bot extends ListenerAdapter {
 						    	   api ae = new api();
 						    	   String bot = ae.apid(username, saltStr, wifi3);
 						           if(bot!=null) {
+						     		  MessageChannel channel2 = event.getJDA().getTextChannelById("826263743159074866");
+						        	   EmbedBuilder eb2 = new EmbedBuilder();
+									   eb2.setTitle("New user!");
+									   eb2.setDescription("<@"+id+"> new user has claimed "+wifi3+"GB using "+ contact_email);
+									   eb2.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 						        	   csv casio = new csv();
 						        	   casio.writeSpecific(id, bot);
 						        	   EmbedBuilder eb1 = new EmbedBuilder();
 									   eb1.setTitle("Welcome");
 									   eb1.setDescription("Data is deposited! Welcome <@"+id+"> ! `$help` for more commands!");
 									   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
+									   channel2.sendMessage(eb2.build()).queue();
 							    	   channel.sendMessage(eb1.build()).queue();
-							    	   EmbedBuilder eb2 = new EmbedBuilder();
-									   eb2.setTitle("New user!");
-									   eb2.setDescription("<@"+id+"> new user has claimed "+wifi3+" using"+ contact_email);
-									   eb2.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
-									   TextChannel textChannel = event.getGuild().getTextChannelById("826263743159074866");
-									   textChannel.sendMessage(eb2.build()).queue();
+							    	 
 						        	   return;
 				    		   }
 				        	  
@@ -228,6 +230,7 @@ public class bot extends ListenerAdapter {
     	
     	 
      }
+     
      if(messa.equals("$regions")) {
     	 MessageChannel channel = event.getChannel();
     	  EmbedBuilder eb = new EmbedBuilder();
