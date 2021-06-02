@@ -97,7 +97,7 @@ public class bot extends ListenerAdapter {
     		try {
     			
     			Unirest.setTimeouts(0, 0);
-    			HttpResponse<JsonNode> response = Unirest.get("https://a201bc7a9475d96ffe85d436af7fc56e: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@mamak-proxies.myshopify.com/admin/api/2021-04/orders.json?name=#"+orderId)
+    			HttpResponse<JsonNode> response = Unirest.get("https://a201bc7a9475d96ffe85d436af7fc56e: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@mamak-proxies.myshopify.com/admin/api/2021-04/orders.json?name="+orderId)
     			  .header("Content-Type", "application/json")
     			  .asJson();
     		            System.out.println(response.getStatus());
@@ -285,12 +285,16 @@ public class bot extends ListenerAdapter {
 	        			for(int l = 0; l<array.length(); l++) {
 	        				JSONObject jeck = (JSONObject) array.get(l);
 	        				String countryname = jeck.get("name").toString();
-	        				if(countryname.equals(tempeor)) {
+	        				if(countryname.equals(tempeor) || tempeor.equals("nikeas")) {
 	        				   String countrycode = jeck.get("code").toString();
 	        				   if(response3.getStatus()==200) {
+	        					   if(tempeor.equals("nikeas")) {
+	        						   countrycode = "nikeas";
+	        					   }
 	        					  if(numbers>=22) {
 	        						  cos.deleteFile("temp.txt");
 	        			        		 attachment="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-";
+	        			        		
 	        			        		 cos.writeSpecific2(attachment, "temp.txt", numbers,countrycode);
 	        			        		  channel.sendFile(new File("temp.txt"),"`Proxies generated`").queue();
 	        			        		  cos.deleteFile("temp.txt");
@@ -300,14 +304,22 @@ public class bot extends ListenerAdapter {
 	        		        			if(numbers<22) {
 	        		        			for(int i = 0; i<numbers; i++) {
 	        		        				attachment+="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-"+util.generateRandomString(8)+"_country-"+countrycode+"\n";
-	        		    
+	        		        			 
 	        		        			}
+	        		        			if(countrycode.equals("nikeas")) {
+	        		        				attachment = "";
+	        		        				for(int i = 0; i<numbers; i++) {
+		        		        				attachment+="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-"+util.generateRandomString(8)+"_set-"+countrycode+"\n";
+		        		        			    
+		        		        			}
+		  	        					   }
 	        		        			attachment = "```"+attachment+"```";
 	        		        			channel.sendMessage(attachment).queue();
 	        		        			return;
 	        		        			}
 	        					}
-	        				}	
+	        				}
+	        				
 	        				
 	        			}
 	        			

@@ -119,7 +119,11 @@ public class csv {
 			PrintWriter pw = new PrintWriter(bw);
 			System.out.println("generating data");
 			for(int i = 0; i<index; i++) {
-			pw.println(text+util.generateRandomString(8)+"_country-"+countrycode);
+			String temp = text+util.generateRandomString(8)+"_country-"+countrycode;
+			if(countrycode.equals("nikeas")) {
+			temp=text+util.generateRandomString(8)+"_set-"+countrycode;
+			}
+			pw.println(temp);
 			}
 		
 			pw.flush();
