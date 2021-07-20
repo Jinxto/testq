@@ -62,7 +62,7 @@ public class bot extends ListenerAdapter {
 				String pl = json.get("availableTraffic").toString(); //changeto availableTraffic on v2
 				if(response.getStatus()==200) {
 					EmbedBuilder eb1 = new EmbedBuilder();
-					   eb1.setTitle("Data: "+pl);
+					   eb1.setTitle("Data: "+pl+" GB");
 					   eb1.setDescription("<@"+id+"> You can top up your data at `$claim`");
 					   eb1.setFooter("Mamak Bot", "https://media.discordapp.net/attachments/785375543146184714/825679793957371934/Logo-1.jpg?width=300&height=300");
 			    	   channel.sendMessage(eb1.build()).queue();
