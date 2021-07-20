@@ -19,7 +19,7 @@ public class App
     	csv start = new csv();
     	start.deleteFile("test.txt");
     	start.csvdataInitialize();
-       JDA jda = JDABuilder.createDefault("NjM1Mzc2MzIyOTAxOTY2ODQ4.XawKUA.9pe8OM9ORjMujM3dKqdPmL2I8kc").build();
+       JDA jda = JDABuilder.createDefault("ODQ2NjY5MzgxODExMTc1NDI0.YKy4Tg.FvF_AZbrdcFYYXECNfuPSMuLwxs").build();
        jda.addEventListener(new bot());
        jda.getPresence().setActivity(Activity.listening("$help in DMs	"));
 
