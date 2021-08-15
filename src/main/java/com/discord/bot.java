@@ -291,32 +291,16 @@ public class bot extends ListenerAdapter {
 	        					   if(tempeor.equals("nikeas")) {
 	        						   countrycode = "nikeas";
 	        					   }
-	        					  if(numbers>=22) {
+	        					  
 	        						  cos.deleteFile("temp.txt");
 	        			        		 attachment="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-";
 	        			        		
 	        			        		 cos.writeSpecific2(attachment, "temp.txt", numbers,countrycode);
-	        			        		  channel.sendFile(new File("temp.txt"),"`Proxies generated`").queue();
+	        			        		  channel.sendFile(new File("temp.txt"),"`Proxies_generated.txt`").queue();
 	        			        		  cos.deleteFile("temp.txt");
 	        			        		 
 	        			        		   return;
-	        		        			}
-	        		        			if(numbers<22) {
-	        		        			for(int i = 0; i<numbers; i++) {
-	        		        				attachment+="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-"+util.generateRandomString(8)+"_country-"+countrycode+"\n";
-	        		        			 
-	        		        			}
-	        		        			if(countrycode.equals("nikeas")) {
-	        		        				attachment = "";
-	        		        				for(int i = 0; i<numbers; i++) {
-		        		        				attachment+="data.mamakproxies.com:12323:"+nama+":"+kataLaluan+"_session-"+util.generateRandomString(8)+"_set-"+countrycode+"\n";
-		        		        			    
-		        		        			}
-		  	        					   }
-	        		        			attachment = "```"+attachment+"```";
-	        		        			channel.sendMessage(attachment).queue();
-	        		        			return;
-	        		        			}
+	        		        		
 	        					}
 	        				}
 	        				
